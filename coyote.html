@@ -22,18 +22,17 @@
 <div ng-controller='CoyoteController'>
   <textarea ng-model="formData.xml" style="width: 100%; height: 200px"></textarea>
   <button ng-click="convert()">Gerar Filtros</button>
-  <button ng-click="formData=''">Limpar</button>
-  <div ng-show="formData.keys.length > 0">
+  <button ng-click="formData={}">Limpar</button>
+  <div ng-if="formData.keys.length > 0">
     <hr>
     Filtrar por:
     <select ng-change="getContent()" ng-model="formData.selectedKey">
       <option ng-repeat="k in formData.keys">{{k}}</option>
     </select>
     <hr>
-    <div ng-show="formData.result.length > 0">
-      <div ng-repeat="data in formData.result track by $index" class="result">
-        {{data}}
-      </div>
+    <div ng-if="formData.result.length > 0" ng-repeat="data in formData.result track by $index" ng-class-odd="'odd'"
+         ng-class-even="'even'" class="result">
+      {{data}}
     </div>
   </div>
 </div>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html ng-app='coyote'>
+<head>
+  <title>Coyote eat Squirrel</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+  <script src="https://raw.githubusercontent.com/abdmob/x2js/master/xml2json.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+  <style>
+    body {
+      font-family: menlo, monospace;
+      font-size: 12px;
+    }
+
+    .result {
+      padding: 5px;
+      border-bottom: 1px dashed #f6ad7c
+    }
+  </style>
+</head>
+<body>
+
+<div ng-controller='CoyoteController'>
+  <textarea ng-model="formData.xml" style="width: 100%; height: 200px"></textarea>
+  <button ng-click="convert()">Gerar Filtros</button>
+  <button ng-click="formData=''">Limpar</button>
+  <div ng-show="formData.keys.length > 0">
+    <hr>
+    Filtrar por:
+    <select ng-change="getContent()" ng-model="formData.selectedKey">
+      <option ng-repeat="k in formData.keys">{{k}}</option>
+    </select>
+    <hr>
+    <div ng-show="formData.result.length > 0">
+      <div ng-repeat="data in formData.result track by $index" class="result">
+        {{data}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function (angular, undefined) {
+
+    var app = angular.module('coyote', []);
+
+    app.controller('CoyoteController', function ($scope) {
+
+      $scope.formData = {};
+      $scope.formData.keys = [];
+      $scope.xml = {};
+      $scope.objJson = {};
+      $scope.formData.result = [];
+      $scope.formData.selectedKey = '';
+
+      function getKeys(obj) {
+        angular.forEach(obj, function (item, index) {
+          if (angular.isObject(item)) {
+            return getKeys(item);
+          }
+          $scope.formData.keys.push(index);
+        });
+        $scope.formData.keys = _.uniq($scope.formData.keys);
+      }
+
+      function getValuesForKey(obj, key) {
+        angular.forEach(obj, function (item, index) {
+          if (angular.isObject(item)) {
+            return getValuesForKey(item, key);
+          }
+          if (index == key) {
+            $scope.formData.result.push(item);
+          }
+        });
+      }
+
+      $scope.convert = function () {
+        $scope.formData.keys = [];
+        var x2js = new X2JS();
+        $scope.xml = $scope.formData.xml;
+        $scope.objJson = x2js.xml_str2json($scope.xml);
+        getKeys($scope.objJson);
+      };
+
+      $scope.getContent = function () {
+        $scope.formData.result = [];
+        return getValuesForKey($scope.objJson, $scope.formData.selectedKey);
+      };
+
+    });
+
+  })(angular);
+
+</script>
+
+</body>
+</html>

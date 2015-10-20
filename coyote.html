@@ -29,6 +29,7 @@
     <select ng-change="getContent()" ng-model="formData.selectedKey">
       <option ng-repeat="k in formData.keys">{{k}}</option>
     </select>
+    <input type="checkbox" ng-click="getUniqResult()"> Resultados únicos
     <hr>
     <div ng-if="formData.result.length > 0" ng-repeat="data in formData.result track by $index" ng-class-odd="'odd'"
          ng-class-even="'even'" class="result">
@@ -50,6 +51,7 @@
       $scope.objJson = {};
       $scope.formData.result = [];
       $scope.formData.selectedKey = '';
+      $scope.formData.uniqResult = false;
 
       function getKeys(obj) {
         angular.forEach(obj, function (item, index) {
@@ -70,6 +72,11 @@
             $scope.formData.result.push(item);
           }
         });
+
+        if($scope.formData.uniqResult) {
+          $scope.formData.result = _.uniq($scope.formData.result);
+        }
+
       }
 
       $scope.convert = function () {
@@ -83,6 +90,11 @@
       $scope.getContent = function () {
         $scope.formData.result = [];
         return getValuesForKey($scope.objJson, $scope.formData.selectedKey);
+      };
+
+      $scope.getUniqResult = function() {
+        $scope.formData.uniqResult = !$scope.formData.uniqResult;
+        $scope.getContent();
       };
 
     });

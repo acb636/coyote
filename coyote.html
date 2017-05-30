@@ -29,8 +29,8 @@
     <select ng-change="getContent()" ng-model="formData.selectedKey">
       <option ng-repeat="k in formData.keys">{{k}}</option>
     </select>
-    <input type="checkbox" ng-click="getUniqResult()" id="chkUniq"><label for="chkUniq"> Resultados únicos</label>
-    <input type="checkbox" ng-click="getOrderedResult()" id="chkOrder"><label for="chkOrder"> Ordenar </label>
+    | <input type="checkbox" ng-click="getUniqResult()" id="chkUniq"><label for="chkUniq"> Resultados únicos</label>
+    | <input type="checkbox" ng-click="getOrderedResult()" id="chkOrder"><label for="chkOrder"> Ordenar </label>
     | <span style="font-weight: bold">{{formData.result.length}}</span> Registros  
     <hr>
     <div ng-if="formData.result.length > 0" ng-repeat="data in formData.result track by $index" ng-class-odd="'odd'"

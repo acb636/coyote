@@ -85,6 +85,8 @@
       }
 
       $scope.convert = function () {
+        $scope.formData.result = [];
+        $scope.formData.selectedKey = '';
         $scope.formData.keys = [];
         var x2js = new X2JS();
         $scope.xml = $scope.formData.xml;

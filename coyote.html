@@ -5,114 +5,74 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
   <script src="https://cdn.rawgit.com/abdmob/x2js/master/xml2json.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
-  <style>
-    body {
-      font-family: menlo, monospace;
-      font-size: 12px;
-    }
+  <script
+    src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+  <script src="app.js"></script>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
 
-    .result {
-      padding: 5px;
-      border-bottom: 1px dashed #f6ad7c
-    }
-  </style>
+
+  <link rel='shortcut icon' type='image/x-icon' href='logo.png' />
 </head>
 <body>
 
-<div ng-controller='CoyoteController'>
-  <textarea ng-model="formData.xml" style="width: 100%; height: 200px"></textarea>
-  <button ng-click="convert()">Gerar Filtros</button>
-  <button ng-click="formData={}">Limpar</button>
-  <div ng-if="formData.keys.length > 0">
-    <hr>
-    Filtrar por:
-    <select ng-change="getContent()" ng-model="formData.selectedKey">
-      <option ng-repeat="k in formData.keys">{{k}}</option>
-    </select>
-    | <input type="checkbox" ng-click="getUniqResult()" id="chkUniq"><label for="chkUniq"> Resultados únicos</label>
-    | <input type="checkbox" ng-click="getOrderedResult()" id="chkOrder"><label for="chkOrder"> Ordenar </label>
-    | <span style="font-weight: bold">{{formData.result.length}}</span> Registros  
-    <hr>
-    <div ng-if="formData.result.length > 0" ng-repeat="data in formData.result track by $index" ng-class-odd="'odd'"
-         ng-class-even="'even'" class="result">
-      {{data}}
+<div class="container">
+  <div class="row">
+    <div class="logo col-md-8 offset-md-2 text-center noselect align-bottom">
+        <p class="h1"><img src="logo.png"/>
+        <span class="about">Coyote</span></p>
+    </div>
+  </div>
+
+
+  <div ng-controller='CoyoteController'>
+    <textarea id="textEditor" ng-model="formData.xml" class="rounded"></textarea>
+    <button ng-click="convert()" class="btn btn-primary btn-sm">Gerar Filtros</button>
+    <button ng-click="formData={}" class="btn btn-warning btn-sm">Limpar</button>
+    <div ng-if="formData.keys.length > 0">
+      <hr>
+      <div class="row">
+        <div class="col-md-auto col-sm-6">
+          <p>Filtrar por:</p>
+        </div>
+        <div class="col-md-auto col-sm-6">
+          <select ng-change="getContent()" ng-model="formData.selectedKey" >
+            <option ng-repeat="k in formData.keys">{{k}}</option>
+          </select>
+        </div>
+        <div class="col-md-auto col-sm-4">
+          | <input type="checkbox" ng-click="getUniqResult()" id="chkUniq"><label for="chkUniq"> Resultados únicos</label>
+        </div>
+        <div class="col-md-auto col-sm-4">
+          | <input type="checkbox" ng-click="getOrderedResult()" id="chkOrder"><label for="chkOrder"> Ordenar </label>
+        </div>
+        <div class="col-md-auto col-sm-4">
+          | <span style="font-weight: bold">{{formData.result.length}}</span> Registros
+        </div>
+
+      </div>
+
+      <hr>
+
+      <div ng-if="formData.result.length > 0" ng-repeat="data in formData.result track by $index" ng-class-odd="'odd'"
+           ng-class-even="'even'" class="result">
+           <button class="clipboard btn btn-link"
+              data-clipboard-text="{{data}}">
+             Copy
+           </button><span class="divider">|</span>
+           {{data}}
+      </div>
     </div>
   </div>
 </div>
-
 <script>
-  (function (angular, undefined) {
 
-    var app = angular.module('coyote', []);
-
-    app.controller('CoyoteController', function ($scope) {
-
-      $scope.formData = {};
-      $scope.formData.keys = [];
-      $scope.xml = {};
-      $scope.objJson = {};
-      $scope.formData.result = [];
-      $scope.formData.selectedKey = '';
-      $scope.formData.uniqResult = false;
-      $scope.formData.orderedResult = false;
-
-      function getKeys(obj) {
-        angular.forEach(obj, function (item, index) {
-          if (angular.isObject(item)) {
-            return getKeys(item);
-          }
-          $scope.formData.keys.push(index);
-        });
-        $scope.formData.keys = _.uniq($scope.formData.keys);
-      }
-
-      function getValuesForKey(obj, key) {
-        angular.forEach(obj, function (item, index) {
-          if (angular.isObject(item)) {
-            return getValuesForKey(item, key);
-          }
-          if (index == key) {
-            $scope.formData.result.push(item);
-          }
-        });
-
-        if($scope.formData.uniqResult) {
-          $scope.formData.result = _.uniq($scope.formData.result);
-        }
-         if($scope.formData.orderedResult) {
-          $scope.formData.result = _.sortBy($scope.formData.result);
-         }
-      }
-
-      $scope.convert = function () {
-        $scope.formData.result = [];
-        $scope.formData.selectedKey = '';
-        $scope.formData.keys = [];
-        var x2js = new X2JS();
-        $scope.xml = $scope.formData.xml;
-        $scope.objJson = x2js.xml_str2json($scope.xml);
-        getKeys($scope.objJson);
-      };
-
-      $scope.getContent = function () {
-        $scope.formData.result = [];
-        return getValuesForKey($scope.objJson, $scope.formData.selectedKey);
-      };
-
-      $scope.getUniqResult = function() {
-        $scope.formData.uniqResult = !$scope.formData.uniqResult;
-        $scope.getContent();
-      };
-      
-      $scope.getOrderedResult = function() {
-        $scope.formData.orderedResult = !$scope.formData.orderedResult;
-        $scope.getContent();
-      };
-
-
-    });
-
-  })(angular);
 
 </script>
 

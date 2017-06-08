@@ -42,6 +42,7 @@
     }
 
     $scope.convert = function () {
+
       $scope.formData.result = [];
       $scope.formData.selectedKey = '';
       $scope.formData.keys = [];
@@ -49,6 +50,7 @@
       $scope.xml = $scope.formData.xml;
       $scope.objJson = x2js.xml_str2json($scope.xml);
       getKeys($scope.objJson);
+
     };
 
     $scope.getContent = function () {
@@ -57,8 +59,8 @@
     };
 
     $scope.updateToggle = function () {
+      $("#copyToggle").off('click');
       $("#copyToggle").on( "click", function() {
-
         $(".clipboard").toggle();
         $(".divider").toggle();
         $(this).button('toggle')

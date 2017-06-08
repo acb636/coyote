@@ -33,9 +33,9 @@
 
   <div ng-controller='CoyoteController'>
     <textarea id="textEditor" ng-model="formData.xml" class="rounded"></textarea>
-    <button ng-click="convert()" class="btn btn-primary btn-sm">Gerar Filtros</button>
-    <button ng-click="formData={}" class="btn btn-warning btn-sm">Limpar</button>
-    <button ng-if="formData.keys.length > 0" id="copyToggle" class="btn btn-info btn-sm">Ativar/Desativar Copy</button>
+    <button id="btnGerarFiltros" ng-click="convert();hideToggle();updateToggle();" class="btn btn-primary btn-sm">Gerar Filtros</button>
+    <button id="btnLimpar" ng-click="formData={}" class="btn btn-warning btn-sm">Limpar</button>
+    <button id="copyToggle"  ng-if="formData.keys.length > 0" class="btn btn-info btn-sm">Ativar/Desativar Copy</button>
 
     <div ng-if="formData.keys.length > 0">
       <hr>

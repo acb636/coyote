@@ -56,6 +56,16 @@
       return getValuesForKey($scope.objJson, $scope.formData.selectedKey);
     };
 
+    $scope.updateToggle = function () {
+      $("#copyToggle").on( "click", function() {
+
+        $(".clipboard").toggle();
+        $(".divider").toggle();
+        $(this).button('toggle')
+      });
+      return true;
+    };
+
     $scope.getUniqResult = function() {
       $scope.formData.uniqResult = !$scope.formData.uniqResult;
       $scope.getContent();
@@ -70,6 +80,9 @@
   });
 
 })(angular);
-$( document ).ready(function() {
+
+
+$(document).ready(function() {
   var clipboard = new Clipboard('.clipboard');
+
 });

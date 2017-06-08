@@ -42,7 +42,6 @@
     }
 
     $scope.convert = function () {
-
       $scope.formData.result = [];
       $scope.formData.selectedKey = '';
       $scope.formData.keys = [];
@@ -50,7 +49,6 @@
       $scope.xml = $scope.formData.xml;
       $scope.objJson = x2js.xml_str2json($scope.xml);
       getKeys($scope.objJson);
-
     };
 
     $scope.getContent = function () {

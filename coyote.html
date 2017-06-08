@@ -35,6 +35,8 @@
     <textarea id="textEditor" ng-model="formData.xml" class="rounded"></textarea>
     <button ng-click="convert()" class="btn btn-primary btn-sm">Gerar Filtros</button>
     <button ng-click="formData={}" class="btn btn-warning btn-sm">Limpar</button>
+    <button ng-if="formData.keys.length > 0" id="copyToggle" class="btn btn-info btn-sm">Ativar/Desativar Copy</button>
+
     <div ng-if="formData.keys.length > 0">
       <hr>
       <div class="row">
@@ -54,9 +56,6 @@
         </div>
         <div class="col-md-auto col-sm-4">
           | <span style="font-weight: bold">{{formData.result.length}}</span> Registros
-        </div>
-        <div class="col-md-auto col-sm-4">
-          | <button id="copyToggle" class="btn btn-secondary btn-sm">Ativar/Desativar Copy</button>
         </div>
 
       </div>

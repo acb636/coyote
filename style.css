@@ -60,6 +60,6 @@ button {
   height: 70px;
 }
 
-labelText {
-   padding-left: 10px;
+.labelText {
+  padding-left: 10px;
 }

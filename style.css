@@ -51,3 +51,6 @@ button {
 .logo img {
   height: 70px;
 }
+.labelText {
+  padding-left: 10px;
+}

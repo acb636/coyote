@@ -42,18 +42,21 @@
           <p>Filtrar por:</p>
         </div>
         <div class="col-md-auto col-sm-6">
-          <select ng-change="getContent()" ng-model="formData.selectedKey" >
+          <select ng-change="getContent();updateToggle();" ng-model="formData.selectedKey" >
             <option ng-repeat="k in formData.keys">{{k}}</option>
           </select>
         </div>
         <div class="col-md-auto col-sm-4">
-          | <input type="checkbox" ng-click="getUniqResult()" id="chkUniq"><label for="chkUniq" class="labelText"> Resultados únicos</label>
+          | <input type="checkbox" ng-click="getUniqResult();updateToggle();" id="chkUniq" class="labelText"><label for="chkUniq"> Resultados únicos</label>
         </div>
         <div class="col-md-auto col-sm-4">
-          | <input type="checkbox" ng-click="getOrderedResult()" id="chkOrder"><label for="chkOrder" class="labelText"> Ordenar </label>
+          | <input type="checkbox" ng-click="getOrderedResult();updateToggle();" id="chkOrder" class="labelText"><label for="chkOrder"> Ordenar </label>
         </div>
         <div class="col-md-auto col-sm-4">
           | <span style="font-weight: bold">{{formData.result.length}}</span> Registros
+        </div>
+        <div class="col-md-auto col-sm-4">
+          | <button id="copyToggle" class="btn btn-secondary btn-sm">Ativar/Desativar Copy</button>
         </div>
 
       </div>

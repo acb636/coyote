@@ -61,6 +61,14 @@
       </div>
 
       <hr>
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <button ng-if="formData.result.length > 0" class="clipboardAll btn btn-sm btn-success"
+             data-clipboard-text="{{formatArray(formData.result)}}">
+            Copy all
+          </button>
+        </div>
+      </div>
 
       <div ng-if="formData.result.length > 0" ng-repeat="data in formData.result track by $index" ng-class-odd="'odd'"
            ng-class-even="'even'" class="result">

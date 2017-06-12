@@ -56,6 +56,15 @@
       return getValuesForKey($scope.objJson, $scope.formData.selectedKey);
     };
 
+    $scope.formatArray = function (ary) {
+
+      var formattedText = '';
+      angular.forEach(ary, function(item){
+        formattedText = formattedText + item + '\n';
+      });
+      return formattedText;
+    }
+
     $scope.updateToggle = function () {
       $("#copyToggle").off('click');
       $("#copyToggle").on( "click", function() {
@@ -84,5 +93,6 @@
 
 $(document).ready(function() {
   var clipboard = new Clipboard('.clipboard');
+  var clipboard = new Clipboard('.clipboardAll');
 
 });

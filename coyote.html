@@ -55,6 +55,9 @@
           | <input type="checkbox" ng-click="getOrderedResult();updateToggle();" id="chkOrder"><label for="chkOrder" class="labelText"> Ordenar </label>
         </div>
         <div class="col-md-auto col-sm-4">
+          | <input type="checkbox" ng-click="getTrimmedResult();updateToggle();" id="chkOrder"><label for="chkOrder" class="labelText"> Trim </label>
+        </div>
+        <div class="col-md-auto col-sm-4">
           | <span style="font-weight: bold">{{formData.result.length}}</span> Registros
         </div>
 
@@ -75,7 +78,10 @@
            <button class="clipboard btn btn-link"
               data-clipboard-text="{{data}}">
              Copy
-           </button><span class="divider">|</span>
+           </button>
+           <span class="divider">|</span>
+           <button class="btn btn-link" ng-click='trim(data, $index)'>Trim</button>
+           <span class="divider">|</span>
            {{data}}
       </div>
     </div>

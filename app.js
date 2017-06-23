@@ -39,6 +39,13 @@
        if($scope.formData.orderedResult) {
         $scope.formData.result = _.sortBy($scope.formData.result);
        }
+      if($scope.formData.trim) {
+        var data = [];
+        _.forEach($scope.formData.result, function(item) {
+          data.push(item.replace(/\s/g,''));
+        });
+        $scope.formData.result = data;
+      }
     }
 
     $scope.convert = function () {
@@ -84,7 +91,14 @@
       $scope.formData.orderedResult = !$scope.formData.orderedResult;
       $scope.getContent();
     };
-
+    $scope.getTrimmedResult = function() {
+      $scope.formData.trim = !$scope.formData.trim;
+      $scope.getContent();
+    };
+    
+    $scope.trim = function(data, index) {
+      $scope.formData.result[index] = data.replace(/\s/g,'');
+    }
 
   });
 

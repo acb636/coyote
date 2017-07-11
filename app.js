@@ -55,7 +55,7 @@
       getValuesForKey($scope.objJson, $scope.formData.selectedKey); 
 
       var data = _.filter($scope.formData.result, function(item) {
-        if(_.contains(item, $scope.formData.filterString)){
+        if(_.contains(item.toLowerCase(), $scope.formData.filterString.toLowerCase())){
           result.push(item);
         }
       });

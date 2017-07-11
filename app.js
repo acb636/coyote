@@ -47,6 +47,20 @@
         $scope.formData.result = data;
       }
     }
+    
+    $scope.filterByString = function () {
+      $scope.formData.result = []; 
+      var result = [];
+      
+      getValuesForKey($scope.objJson, $scope.formData.selectedKey); 
+
+      var data = _.filter($scope.formData.result, function(item) {
+        if(_.contains(item, $scope.formData.filterString)){
+          result.push(item);
+        }
+      });
+      $scope.formData.result = result; 
+    };
 
     $scope.convert = function () {
       $scope.formData.result = [];
